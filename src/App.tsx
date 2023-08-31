@@ -1,7 +1,8 @@
 import React from 'react';
+import './App.less'
 
 const App = () => (
-  <p>test</p>
+  <div className="title">test</div>
 );
 
 export default App;
