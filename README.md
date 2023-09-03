@@ -39,6 +39,10 @@ Used for building user interface components.
 
 Simplifies the import and implementation of various components, saving time and effort compared to creating everything from scratch.
 
+### Typescript
+
+Offers a range of benefits over JavaScript as well as improving type safety, tooling, and integration. Makes the code to be high-quality, scalable, and maintainable that is easier to debug and test
+
 ### Chart JS
 
 Enables the creation of historical charts, allowing you to select different time periods (1 day, 1 month, 3 months, 1 year) to visualize historical data in the form of a line graph.
