@@ -6,6 +6,8 @@ This project is designed to provide you with an easy-to-access display of crypto
 
 Upon loading the page, the results are displayed in batches of 100 per page. Utilize the pagination button located at the bottom of the page to access more results.
 
+A Responsive design has been used to suit both laptop and mobile to ensure a user-friendly UI for all people
+
 The Search Bar allows you to filter cryptocurrencies based on their names or symbols.
 
 You can switch between USD and AUD as the currency type on the right side of the Header Bar.
