@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { CoinsList } from '../config/api';
 import { useCrypto } from '../CryptoContext';
-import { ICoin } from './interfaces/coins.interface';
+import { ICoin, ICoinType } from './interfaces/coins.interface';
 import { 
   Container,
   Typography,
@@ -15,10 +15,30 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableSortLabel,
+  Pagination
 } from '@mui/material';
 import axios from 'axios';
 
-const tableAttritube = ['Coin', 'Price', '1h', '24h', '7d', "Mkt Cap"];
+const tableAttritube = ['market_cap_rank', 'name', 'current_price', 'price_change_percentage_1h_in_currency', 'price_change_percentage_24h_in_currency', 'price_change_percentage_7d_in_currency', 'market_cap'];
+const headToAttritube = (attritube: string) => {
+  switch(attritube) {
+    case 'market_cap_rank':
+      return '#';
+    case 'name':
+      return 'Coin';
+    case 'current_price':
+      return 'Price';
+    case 'price_change_percentage_1h_in_currency':
+      return '1h';
+    case 'price_change_percentage_24h_in_currency':
+      return '24h';
+    case 'price_change_percentage_7d_in_currency':
+      return '7d';
+    case 'market_cap':
+      return 'Mkt Cap';
+  }
+}
 
 export const addComma = (num: number) =>{
   let temps = num.toString().split('.'), 
@@ -34,22 +54,34 @@ export const addComma = (num: number) =>{
 const Coins: React.FunctionComponent = () => {
   const [coinsList, setCoinsList] = useState<ICoin[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
+  const [sortBy, setSortBy] = useState<string>('');
+  const [isDesc, setIsDesc] = useState<boolean>(true);
   const { currency } = useCrypto();
   const navigate = useNavigate();
+  console.log(page)
+  console.log(coinsList)
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const result = await axios(CoinsList(currency));
+      const result = await axios(CoinsList(currency, page));
       setCoinsList(result.data);
       setLoading(false);
     };
     fetchData();
-  }, [currency])
+  }, [currency, page])
 
-  console.log(coinsList)
+
+  const sortByAttritube = (attritube: ICoinType, isDesc: boolean) => {
+    const compareNumbers = (a: ICoin, b: ICoin) => isDesc ? (
+      Number(b[attritube]) - Number(a[attritube])
+    ) : (
+      Number(a[attritube]) - Number(b[attritube])
+    )
+    return compareNumbers;
+  }
 
   const handleSearch = () => {
     return coinsList.filter(
@@ -57,6 +89,14 @@ const Coins: React.FunctionComponent = () => {
         coin.name.toLowerCase().includes(search) ||
         coin.symbol.toLowerCase().includes(search)
     );
+  };
+
+  const handleSort = (tableAttritube: any) => {
+    setSortBy(tableAttritube);
+    (tableAttritube === sortBy) ? setIsDesc(!isDesc) : setIsDesc(true);
+    const currentIsDesc =  (tableAttritube === sortBy) ? !isDesc : true
+    coinsList.sort(sortByAttritube(tableAttritube, currentIsDesc));
+    setCoinsList(coinsList);
   };
 
   return (
@@ -80,18 +120,25 @@ const Coins: React.FunctionComponent = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                {tableAttritube.map((tableAttritube) => (
-                  <TableCell
-                    sx={{
-                      color: 'black',
-                      fontWeight: '700',
-                    }}
-                    key={tableAttritube}
-                    align={tableAttritube === 'Coin' ? 'left' : 'right'}
-                  >
-                    {tableAttritube}
-                  </TableCell>
-                ))}
+                {tableAttritube.map((tableAttritube) => {
+                  return (
+                    <TableCell
+                      sx={{
+                        color: 'black',
+                        fontWeight: '700',
+                      }}
+                      key={tableAttritube}
+                      align={tableAttritube === 'name' ? 'left' : 'right'}
+                    >
+                      <TableSortLabel
+                        active={sortBy === tableAttritube}
+                        direction={isDesc ? 'desc' : 'asc'}
+                        onClick={() => handleSort(tableAttritube)}
+                      >
+                        {headToAttritube(tableAttritube)}
+                      </TableSortLabel>
+                    </TableCell>
+                )})}
               </TableRow>
             </TableHead>
 
@@ -102,12 +149,14 @@ const Coins: React.FunctionComponent = () => {
                       coin.price_change_percentage_24h_in_currency, 
                       coin.price_change_percentage_7d_in_currency
                     ];
-                    
                     return (
                       <TableRow
-                        onClick={() => navigate(`/coins/${coin.name}`)}
                         key={coin.name}
+                        hover
                       >
+                        <TableCell align="right">
+                          {coin.market_cap_rank}
+                        </TableCell>
                         <TableCell
                           component="th"
                           scope="row"
@@ -124,7 +173,11 @@ const Coins: React.FunctionComponent = () => {
                             />
                           </div>
                           <div
-                            style={{ display: 'flex', flexDirection: 'column' }}
+                            onClick={() => navigate(`/coins/${coin.name}`)}
+                            style={{ display: 'flex', 
+                              flexDirection: 'column',
+                              cursor: 'pointer'
+                            }}
                           >
                             <span
                               style={{
@@ -146,7 +199,7 @@ const Coins: React.FunctionComponent = () => {
                         {profitList.map((profit) => (
                           <TableCell
                             align="right"
-                            style={{
+                            sx={{
                               color: (profit > 0) ? '#4eaf0a' : 'red',
                               fontWeight: 500,
                             }}
@@ -164,6 +217,21 @@ const Coins: React.FunctionComponent = () => {
               </TableBody>
           </Table>)}
       </TableContainer>
+
+      <Pagination
+          count={100}
+          size="small"
+          sx={{
+            p: 2,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          onChange={(_, value) => {
+            setPage(value);
+            window.scroll(0, 0);
+          }}
+        />
     </Container>
   )
 };
