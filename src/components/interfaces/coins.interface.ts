@@ -8,6 +8,7 @@ export interface ICoin {
   price_change_percentage_1h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
   price_change_percentage_24h_in_currency: number;
+  id: string;
 }
 
 export type ICoinType = keyof ICoin;

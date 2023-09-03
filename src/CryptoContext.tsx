@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext } from 'react';
-import { createVoidZero } from 'typescript';
 import { ICryptoContext } from './components/interfaces/cryptoContext.interface'
 
 const Crypto = createContext<ICryptoContext>({ currency: 'USD', setCurrency: () => {} });

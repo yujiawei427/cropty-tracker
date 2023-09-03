@@ -60,8 +60,6 @@ const Coins: React.FunctionComponent = () => {
   const [isDesc, setIsDesc] = useState<boolean>(true);
   const { currency } = useCrypto();
   const navigate = useNavigate();
-  console.log(page)
-  console.log(coinsList)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,14 +80,6 @@ const Coins: React.FunctionComponent = () => {
     )
     return compareNumbers;
   }
-
-  const handleSearch = () => {
-    return coinsList.filter(
-      (coin) =>
-        coin.name.toLowerCase().includes(search) ||
-        coin.symbol.toLowerCase().includes(search)
-    );
-  };
 
   const handleSort = (tableAttritube: any) => {
     setSortBy(tableAttritube);
@@ -173,7 +163,7 @@ const Coins: React.FunctionComponent = () => {
                             />
                           </div>
                           <div
-                            onClick={() => navigate(`/coins/${coin.name}`)}
+                            onClick={() => navigate(`/coins/${coin.id.toLowerCase()}`)}
                             style={{ display: 'flex', 
                               flexDirection: 'column',
                               cursor: 'pointer'
