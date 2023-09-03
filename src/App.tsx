@@ -3,11 +3,10 @@ import {
   Route,
   BrowserRouter
 } from 'react-router-dom';
-import React, { useState, createContext, useContext, useMemo } from 'react';
+import { useState, createContext, useContext, useMemo } from 'react';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import CoinPage from './pages/CoinPage';
-import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider, useTheme, Box, IconButton } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 
