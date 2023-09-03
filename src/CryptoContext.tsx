@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext } from 'react';
 import { createVoidZero } from 'typescript';
-import { ICryptoContextProps } from './components/interfaces/cryptoContext.interface'
+import { ICryptoContext } from './components/interfaces/cryptoContext.interface'
 
-const Crypto = createContext<ICryptoContextProps>({ currency: 'USD', setCurrency: () => {} });
+const Crypto = createContext<ICryptoContext>({ currency: 'USD', setCurrency: () => {} });
 
 export const CryptoContext = ({ children }: {children: React.ReactNode}) =>  {
   const [currency, setCurrency] = useState<string>('USD');
