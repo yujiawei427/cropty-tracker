@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# Crypto Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is for presenting the market data of cryptocurrencies into table through (https://api.coingecko.com/api/v3) provided by CoinGecko API.
+
+## Features
+
+After the page is loaded, the results are returned in 100 per page. You can use the pagination button at the bottom of the page to see more results.
+
+SearchBar can be used to filter the cryptocurrency by its name/symbol.
+
+Currency Type is changeable in USD/AUD at the right of Header Bar.
+
+Table Head is clickable to sort the result in asc/desc order.
+
+You can get a more detailed view of the certain Cryptocurrency by clicking on the Coin name.
+
+There is a line graph in detailed coin page to display the trend of the price of the cryptocurrency.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
+### `npm install`
+
+To install dependencies the project needed before runing the whole project, it may take a while.
+
 ### `npm start`
 
-Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner and run all the tests.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Main Tech Stacks used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### React
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To construct UI components
 
-### `npm run eject`
+### Material Ui 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To help us to import and use different components in a faster way insteading to write everything from scratch
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Chart JS
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To generate the historical chart with your selected period(1day/1month/3month/1year) to see the historical data in line graph
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Jest/Enzyme
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+To run tests and provide test coverage

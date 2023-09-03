@@ -89,6 +89,14 @@ const Coins: React.FunctionComponent = () => {
     setCoinsList(coinsList);
   };
 
+  const handleSearch = () => {
+    return coinsList.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(search) ||
+        coin.symbol.toLowerCase().includes(search)
+    );
+  };
+
   return (
     <Container sx={{ textAlign: "center" }}>
       <Typography
@@ -133,7 +141,7 @@ const Coins: React.FunctionComponent = () => {
             </TableHead>
 
             <TableBody>
-                {coinsList
+                {handleSearch()
                   .map((coin) => {
                     const profitList = [coin.price_change_percentage_1h_in_currency, 
                       coin.price_change_percentage_24h_in_currency, 
