@@ -32,7 +32,7 @@ const CoinChart: React.FunctionComponent<ICoinChart> = ( { id } ) => {
         justifyContent: 'center',
         width: {xs: '100vw', md: '60vw'},
         height: '100%',
-        mb: {xs: 5, md: 0}
+        mb: {xs: 5, md: 0},
     }}>
       <Line
         data={{

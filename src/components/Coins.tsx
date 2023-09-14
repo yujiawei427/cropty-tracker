@@ -18,7 +18,9 @@ import {
   TableSortLabel,
   Pagination
 } from '@mui/material';
+import PushPinIcon from '@mui/icons-material/PushPin';
 import axios from 'axios';
+import CoinCard from './coinCard';
 
 const tableAttritube = ['market_cap_rank', 'name', 'current_price', 'price_change_percentage_1h_in_currency', 'price_change_percentage_24h_in_currency', 'price_change_percentage_7d_in_currency', 'market_cap'];
 const headToAttritube = (attritube: string) => {
@@ -58,8 +60,11 @@ const Coins: React.FunctionComponent = () => {
   const [page, setPage] = useState<number>(1);
   const [sortBy, setSortBy] = useState<string>('');
   const [isDesc, setIsDesc] = useState<boolean>(true);
+  const [pinned, setPinned] = useState<boolean[]>(new Array(100).fill(false));
   const { currency } = useCrypto();
   const navigate = useNavigate();
+  // console.log(coinsList);
+  pinned[1] pinned[3] pinned[5]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +102,11 @@ const Coins: React.FunctionComponent = () => {
     );
   };
 
+  const handlePin = (pinned: boolean[]) => {
+
+    // setPinned();
+  }
+
   return (
     <Container sx={{ textAlign: "center" }}>
       <Typography
@@ -111,6 +121,11 @@ const Coins: React.FunctionComponent = () => {
         sx={{ mb: 2, width: '100%' }}
         onChange={(e) => setSearch(e.target.value)}
       />
+
+      {pinned.map((pinboolean, index) => {
+        pinboolean && <CoinCard coin={coinsList[index]}></CoinCard>
+      }}
+
       <TableContainer component={Paper}>
         {loading ? (
           <CircularProgress sx={{ color: '#4eaf0a' }} />
@@ -118,6 +133,16 @@ const Coins: React.FunctionComponent = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
+                <TableCell
+                  sx={{
+                    color: 'black',
+                    fontWeight: '700',
+                  }}
+                  key={'action'}
+                  align={'center'}
+                >
+                  Action
+                </TableCell>
                 {tableAttritube.map((tableAttritube) => {
                   return (
                     <TableCell
@@ -152,6 +177,12 @@ const Coins: React.FunctionComponent = () => {
                         key={coin.name}
                         hover
                       >
+                        <TableCell align="center">
+                          {pinned 
+                            ? <PushPinIcon /> 
+                            : <PushPinIcon sx={{ backgroundColor: 'blue'}}
+                          />}
+                        </TableCell>
                         <TableCell align="right">
                           {coin.market_cap_rank}
                         </TableCell>
