@@ -16,11 +16,12 @@ import {
   TableCell,
   TableBody,
   TableSortLabel,
-  Pagination
+  Pagination,
+  Box
 } from '@mui/material';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import axios from 'axios';
-import CoinCard from './coinCard';
+import CoinCard from './CoinCard';
 
 const tableAttritube = ['market_cap_rank', 'name', 'current_price', 'price_change_percentage_1h_in_currency', 'price_change_percentage_24h_in_currency', 'price_change_percentage_7d_in_currency', 'market_cap'];
 const headToAttritube = (attritube: string) => {
@@ -63,8 +64,7 @@ const Coins: React.FunctionComponent = () => {
   const [pinned, setPinned] = useState<boolean[]>(new Array(100).fill(false));
   const { currency } = useCrypto();
   const navigate = useNavigate();
-  // console.log(coinsList);
-  pinned[1] pinned[3] pinned[5]
+  console.log(pinned)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,9 +102,10 @@ const Coins: React.FunctionComponent = () => {
     );
   };
 
-  const handlePin = (pinned: boolean[]) => {
-
-    // setPinned();
+  const handlePin = (num: number) => {
+    const tempPinned = [...pinned];
+    tempPinned[num] = !tempPinned[num];
+    setPinned(tempPinned);
   }
 
   return (
@@ -121,11 +122,13 @@ const Coins: React.FunctionComponent = () => {
         sx={{ mb: 2, width: '100%' }}
         onChange={(e) => setSearch(e.target.value)}
       />
-
-      {pinned.map((pinboolean, index) => {
-        pinboolean && <CoinCard coin={coinsList[index]}></CoinCard>
-      }}
-
+      <Box  sx={{ display: 'flex'}}>
+        {pinned.map((pinboolean, index) => {
+          return (
+            pinboolean && <CoinCard coin={coinsList[index]}></CoinCard>
+          )
+        })}
+      </Box>
       <TableContainer component={Paper}>
         {loading ? (
           <CircularProgress sx={{ color: '#4eaf0a' }} />
@@ -178,10 +181,10 @@ const Coins: React.FunctionComponent = () => {
                         hover
                       >
                         <TableCell align="center">
-                          {pinned 
-                            ? <PushPinIcon /> 
-                            : <PushPinIcon sx={{ backgroundColor: 'blue'}}
-                          />}
+                          {pinned[coin.market_cap_rank - 1] 
+                            ? <PushPinIcon onClick={() => handlePin(coin.market_cap_rank - 1)} sx={{ backgroundColor: 'blue'}}/> 
+                            : <PushPinIcon onClick={() => handlePin(coin.market_cap_rank - 1)}/>
+                          }
                         </TableCell>
                         <TableCell align="right">
                           {coin.market_cap_rank}
